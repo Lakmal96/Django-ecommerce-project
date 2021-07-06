@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-6">
+            <div class="card w-100 mt-5">
+                <h3 class=" card-header">Login</h3>
+                <div class="card-body">
+                    {% for message in messages %}
+                    <div class="alert alert-danger" role="alert">
+                        {{message}}
+                    </div>
+
+                    {% endfor %}
+                    <form method="POST">{% csrf_token %}
+                        {{form|crispy}}
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block"> Login </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <p class="text-center mt-4">Don't have account? <a href="{% url 'select_role' %}">Sign up</a></p>
+            <p class="text-center mt-4">Forgot the password? <a href="{% url 'forgot_password' %}">Reset the
+                    password</a></p>
+            <br><br>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

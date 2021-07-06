@@ -1,0 +1,112 @@
+<header>
+    <!-- navbar -->
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+        <div class="container">
+            <a class="navbar-brand text-white" href=" {% url 'home' %}">Kolamba Kade</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            {% if user.is_supplier %}
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item ">
+                    <a class="nav-link text-white" href="{% url 'home' %}">Home </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link text-white" href="#">Orders</a>
+                <li>
+                    <a class="nav-link text-white" href="{% url 'logout' %}"> Logout</a>
+                </li>
+                </li>
+            </ul>
+            {% else %}
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item ">
+                        <a class="nav-link text-white" href="{% url 'home' %}">Home </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link text-white" href="#">Customized Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Fashion Tips</a>
+                    </li>
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- end of nav bar -->
+    {% if user.is_supplier %}
+    {% else %}
+    <div class=" border-bottom">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <div class="dropdown d-inline-block float-left">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-bars"></i> Category List
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'store' %}">All Products</a>
+                            {% for category in links %}
+                            <a class="dropdown-item" href="{{category.get_category_url}}">{{category.category_name}}</a>
+                            {% endfor %}
+                        </div>
+                        <a href=" {% url 'store' %}" class="btn btn-outline-primary mx-3">Store</a>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <form action="{% url 'search' %}" method="GET">
+                        <div class="input-group w-100">
+                            <input type="text" class="form-control" placeholder="Search" name="keyword">
+
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="d-flex justify-content-end">
+                        <div class="widget-header">
+                            {% if user.is_authenticated %}
+                            <small class="title text-muted">Welcome {{user.first_name}}</small>
+                            {% else %}
+                            <small class="title text-muted">Welcome Guest</small>
+                            {% endif %}
+                            {% if user.is_authenticated %}
+                            <div>
+                                <a href="{% url 'dashboard' %}">Dashboard</a> <span> | </span>
+                                <a href="{% url 'logout' %}"> Logout</a>
+                            </div>
+                            {% else %}
+                            <div>
+                                <a href="{% url 'login' %}">Sign in</a> <span> | </span>
+                                <a href="{% url 'select_role' %}"> Register</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <a href="{% url 'cart' %}" class="ml-3 my-2" style="text-decoration: none;">
+                            <div><i class="fa fa-cart-plus fa-2x"></i>
+                                <span class="badge badge-pill badge-danger">{{cart_count}}</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endif %}
+
+
+</header>

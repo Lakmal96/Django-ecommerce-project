@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="container">
+    <div class="row my-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-3">Delivery Address</h4>
+                    <hr>
+                    <form action="{% url 'place_order' %}" method="POST">{% csrf_token %}
+                        <div class="form-row">
+                            <div class="col from-group">
+                                <label for="">First Name</label>
+                                <input type="text" name="first_name" class="form-control" required>
+                            </div>
+                            <div class="col from-group">
+                                <label for="">Last Name</label>
+                                <input type="text" name="last_name" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col from-group">
+                                <label for="">Email</label>
+                                <input type="email" name="email" class="form-control" required>
+                            </div>
+                            <div class="col from-group">
+                                <label for="">Phone Number</label>
+                                <input type="text" name="phone_number" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col from-group">
+                                <label for="">Address Line 1</label>
+                                <input type="text" name="address_line_1" class="form-control" required>
+                            </div>
+                            <div class="col from-group">
+                                <label for="">Address Line 2</label>
+                                <input type="text" name="address_line_2" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col from-group">
+                                <label for="">City</label>
+                                <input type="text" name="city" class="form-control" required>
+                            </div>
+                            <div class="col from-group">
+                                <label for="">District</label>
+                                <input type="text" name="district" class="form-control" required>
+                            </div>
+                            <div class="col from-group">
+                                <label for="">Postal Code</label>
+                                <input type="text" name="postal_code" class="form-control" required>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cart_item in cart_items %}
+                            <tr>
+                                <td>
+                                    <img src="{{cart_item.product.images.url}}" style="height: 7vh;">
+                                    <a href="{{cart_item.product.get_details_url}}" class="text-dark"
+                                        style="text-decoration: none;">{{cart_item.product.product_name}}</a>
+                                    <p class="text-muted small">
+                                        {% if cart_item.variations.all %}
+                                        {% for item in cart_item.variations.all %}
+                                        {{item.variation_category | capfirst}} : {{item.variation_value | capfirst}}<br>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </p>
+                                </td>
+                                <td>{{cart_item.quantity}}
+
+                                </td>
+                                <td>
+                                    <div>
+                                        <h6>$ {{cart_item.sub_total}}</h6>
+                                        <p class="text-muted small">$ {{cart_item.product.price}} </p>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <button type="submit" class="btn btn-success btn-block">Place Order</button>
+                    <a href="{% url 'store' %}" class="btn btn-dark btn-block"><i
+                            class="far fa-arrow-alt-circle-left"></i>
+                        Continue Shopping</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+{% endblock %}
