@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block content %}
 
@@ -14,10 +15,12 @@
             </div>
             <!-- end product image -->
 
+
+
             <!-- product details -->
             <div class="col-md-6">
                 <h2 class="my-2">{{single_product.product_name}}</h2>
-                <h4>$ {{single_product.price}}</h4>
+                <h4>Rs. {{single_product.price}}</h4>
                 <p>{{single_product.description}}</p>
                 <hr>
                 <!-- end product details -->
@@ -62,6 +65,69 @@
                 </form>
 
             </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <ul style="margin:0 auto; padding:0; float:left">
+                    <li style="list-style: none; margin:10px">
+                        {% for i in product_gallery %}
+                        <a href=""><img src="{{i.image.url}}" alt="Product Image"
+                                style="width:160px; height:160px; border:1px solid grey"></a>
+                        {% endfor %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-10 my-3">
+            <h3 class="my-3">Product Reviews</h3>
+            <h5>Write your Review here!</h5>
+            <p>How do you Rate this Product? (Please enter value between 1 and 5)</p>
+            <form action="{% url 'product_review' single_product.id %}" method="POST">{% csrf_token %}
+                <input type="text" class="form-control my-2" placeholder="Ratings/5.0" name="ratings">
+                <input type="text" class="form-control my-2" placeholder="Subject" name="topic">
+                <Textarea class="form-control my-2" placeholder="Add your Review" name="review" rows="4"></Textarea>
+
+                {% if user.is_authenticated %}
+                {% if order_product %}
+                <input type="submit" value="Submit Review" class="btn btn-primary btn-block my-2">
+                {% else %}
+                <p>You must purchase this item to add a Review</p>
+                {% endif %}
+                {% else %}
+                <p>You must be login to add reviews <span><a href="{% url 'login' %}">Login</a></span></p>
+                {% endif %}
+            </form>
+
+            {% for message in messages %}
+            <div class="alert alert-success" role="alert">
+                {{message}}
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-10 mb-3">
+            <h3>Reviews</h3>
+            <hr>
+            {% for review in reviews %}
+            <div class="card bg-light">
+                <div class="mx-2 mb-2">
+                    <b>{{review.user.first_name}} {{review.user.last_name}} ({{review.ratings}}/5.0)</b>
+                    <b style="float: right; font-size:small;">{{review.updated_at | timesince}} ago</b>
+                </div>
+                <p class="mx-2"><u><i>{{review.topic}}</i></u></p>
+                <p class="mx-2">{{review.review}}</p>
+            </div>
+            <br>
+            {% endfor %}
         </div>
     </div>
 

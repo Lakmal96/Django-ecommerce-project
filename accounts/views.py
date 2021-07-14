@@ -18,6 +18,7 @@ from . models import User, Customer, Supplier
 
 from carts.views import _cart_id
 from carts.models import Cart, CartItem
+from orders.models import Order, OrderProduct
 
 import requests
 
@@ -126,7 +127,15 @@ def logout_page(request):
 
 @login_required(login_url='login')
 def dashboad(request):
-    return render(request, 'accounts/dashboard.html', {})
+    orders = Order.objects.order_by(
+        '-created_at').filter(user_id=request.user.id, is_ordered=True)
+    orders_count = orders.count()
+
+    context = {
+        'orders_count': orders_count
+    }
+
+    return render(request, 'accounts/dashboard.html', context)
 
 
 def forgot_password(request):
@@ -192,3 +201,30 @@ def reset_password(request):
             return redirect('reset_password')
     else:
         return render(request, 'accounts/reset_password_page.html')
+
+
+def my_orders(request):
+    orders = Order.objects.order_by(
+        '-created_at').filter(user=request.user, is_ordered=True)
+
+    context = {
+        'orders': orders
+    }
+
+    return render(request, 'accounts/my_orders.html', context)
+
+
+@login_required(login_url='login')
+def order_details(request, order_id):
+    order_detail = OrderProduct.objects.filter(order__order_number=order_id)
+    order = Order.objects.get(order_number=order_id)
+    sub_total = 0
+    for i in order_detail:
+        sub_total += i.product_price * i.quantity
+    context = {
+        'order_detail': order_detail,
+        'order': order,
+        'sub_total': sub_total,
+    }
+
+    return render(request, 'accounts/order_details.html', context)
