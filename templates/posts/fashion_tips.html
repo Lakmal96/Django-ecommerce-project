@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-8">
+            <h3 class="text-primary text-center  mt-1">Fashion Tips</h3>
+            <a href="{% url 'store' %}" class="btn btn-outline-success btn-block"><i
+                    class="far fa-arrow-alt-circle-left"></i> Go to Store</a>
+            <hr>
+            {% for post in posts %}
+            <div class="card mt-3 bg-light">
+                <h5 class="card-header text-center">{{post.title}} by Admin</h5>
+                <div class="card-body text-center">
+                    {{post.fashion_tip|safe}}
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+</div>
+
+
+{% endblock %}

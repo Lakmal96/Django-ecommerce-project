@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% if user.is_supplier %}
+<a href="{% url 'home' %}"></a>
+
+{% else %}
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-8">
+            <div class="card mt-3">
+                <h3 class="card-header text-center">Customized Order</h3>
+                <div class="card-body">
+                    <form action="{% url 'customized_orders' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="form-row">
+                            <div class="col form-group">
+                                <span><label for="">Enter the Type</label>
+                                    <i class="text-muted small">(ex:T-Shirt, Shirt, Short-Sleeve Shirt, ...)</i>
+                                </span>
+                                <input type="text" name="order_type" class="form-control">
+                            </div>
+                        </div>
+
+
+                        <div class="form-row">
+                            <div class="col form-group">
+                                <label for="">Front Text</label>
+                                <input type="text" name="front_text" class="form-control">
+                            </div>
+                            <div class="col form-group">
+                                <label for="">Back Text</label>
+                                <input type="text" name="back_text" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-md-1 form-group">
+                                <label for="">Color</label>
+                                <input type="color" value="" name="color">
+                            </div>
+                            <div class="col form-group">
+                                <label for="">Logo</label>
+                                <input type="file" name="logo" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col form-group">
+                                <label for="">Description</label>
+                                <textarea name="description" id="" rows="6" class="form-control"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-md-2 form-group">
+                                <label for="">Quantity</label>
+                                <input type="text" name="quantity" class="form-control">
+                            </div>
+                            <div class="col form-group">
+                                <label for="">Final Design</label>
+                                <input type="file" name="design_image" class="form-control">
+                            </div>
+                        </div>
+
+                        <input type="submit" value="Place Order" class="btn btn-success btn-block">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+
+
+{% endblock %}

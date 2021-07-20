@@ -4,7 +4,11 @@
             class="list-group-item {% if '/accounts/' == request.path %}active{% endif %}">Dashboard</a>
         <a href="{% url 'my_orders' %}"
             class="list-group-item {% if '/my_orders/' in request.path %}active{% endif %}">My Orders</a>
+        <a href="{% url 'my_customized_orders' %}"
+            class="list-group-item {% if '/my_customized_orders/' in request.path %}active{% endif %}">My Customized
+            Orders</a>
     </ul>
     <br>
-    <a href="" class="btn btn-outline-danger btn-block"><i class="fa fa-power-off"></i><span> Log out</span></a>
+    <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-block"><i class="fa fa-power-off"></i><span> Log
+            out</span></a>
 </div>

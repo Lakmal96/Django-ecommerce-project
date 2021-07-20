@@ -3,7 +3,12 @@
 
 {% block content %}
 
+<!-- checkthis for supplier -->
+{% if user.is_supplier %}
+<a href="{% url 'home' %}"></a>
 
+
+{% else %}
 <div class="container">
     <div class="row my-4">
         <div class="col-md-6">
@@ -112,7 +117,7 @@
     </div>
 </div>
 
-
+{% endif %}
 
 
 {% endblock %}

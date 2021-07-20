@@ -40,12 +40,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'crispy_forms',
+    'colorfield',
+    'ckeditor',
 
     'category',
     'accounts',
     'store',
     'carts',
     'orders',
+    'customized',
+    'posts',
 ]
 
 MIDDLEWARE = [
@@ -119,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Colombo'  # 'UTC'
 
 USE_I18N = True
 

@@ -19,6 +19,8 @@ from . models import User, Customer, Supplier
 from carts.views import _cart_id
 from carts.models import Cart, CartItem
 from orders.models import Order, OrderProduct
+from customized.models import CustomizedOrder
+from customized.forms import CustomizedOrderForm
 
 import requests
 
@@ -130,9 +132,12 @@ def dashboad(request):
     orders = Order.objects.order_by(
         '-created_at').filter(user_id=request.user.id, is_ordered=True)
     orders_count = orders.count()
+    customized_orders = CustomizedOrder.objects.filter(user_id=request.user.id)
+    customized_order_count = customized_orders.count()
 
     context = {
-        'orders_count': orders_count
+        'orders_count': orders_count,
+        'customized_order_count': customized_order_count
     }
 
     return render(request, 'accounts/dashboard.html', context)
@@ -214,6 +219,17 @@ def my_orders(request):
     return render(request, 'accounts/my_orders.html', context)
 
 
+def my_customized_orders(request):
+    customized_orders = CustomizedOrder.objects.filter(
+        user=request.user).order_by('-created_at')
+
+    context = {
+        'customized_orders': customized_orders
+    }
+
+    return render(request, 'accounts/my_customized_orders.html', context)
+
+
 @login_required(login_url='login')
 def order_details(request, order_id):
     order_detail = OrderProduct.objects.filter(order__order_number=order_id)
@@ -228,3 +244,14 @@ def order_details(request, order_id):
     }
 
     return render(request, 'accounts/order_details.html', context)
+
+
+def customized_order_details(request, customized_order_id):
+    customized_order_detail = CustomizedOrder.objects.filter(
+        customized_order_number=customized_order_id)
+
+    context = {
+        'customized_order_detail': customized_order_detail,
+    }
+
+    return render(request, 'accounts/customized_order_details.html', context)

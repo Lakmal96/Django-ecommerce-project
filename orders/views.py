@@ -151,7 +151,7 @@ def order_complete(request):
         total_price = 0
 
         for op in ordered_products:
-            total_price = op.product_price * op.quantity
+            total_price += op.product_price * op.quantity
 
         context = {
             'order': order,

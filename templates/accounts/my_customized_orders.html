@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row mt-3">
+        {% include 'includes/sidebar.html' %}
+
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Customized Order History of : </strong>
+                    <span>{{user.first_name}} {{user.last_name}}</span>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Order #</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Order Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for customized_order in customized_orders %}
+                                <tr>
+                                    <th scope="row">
+                                        <a
+                                            href="{% url 'customized_order_details' customized_order.customized_order_number %}">{{customized_order.customized_order_number}}</a>
+                                    </th>
+                                    <td>{{customized_order.order_type}}</td>
+                                    <td>{{customized_order.status}}</td>
+                                    <td>{{customized_order.created_at}}</td>
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}

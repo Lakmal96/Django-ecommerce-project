@@ -27,6 +27,18 @@
                         <div class="col-md-6">
                             <div class="card" style="text-align: center;">
                                 <div class="card-body">
+                                    <h4 class="card-title">Total Customized Orders</h4>
+                                    <h4>{{customized_order_count}}</h4>
+                                    <a href="{% url 'my_customized_orders' %}" style="text-decoration: none;">View
+                                        Customized Orders</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-6">
+                            <div class="card" style="text-align: center;">
+                                <div class="card-body">
                                     {{user.first_name}} {{user.last_name}} <br>
                                     {{user.email}}
                                 </div>
