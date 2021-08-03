@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% if user.is_superuser %}
+<div class="container">
+
+    <div class="row mt-4">
+
+        <div class="col-md-4">
+            <div class="card bg-primary" style="border-radius: 0;">
+                <h4 class="text-white mx-3">Total number of Orders</h4>
+                <h1 class="text-white mx-3">{{order_count}}</h1>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-warning" style="border-radius: 0;">
+                <h4 class="text-white mx-3">Total New Orders</h4>
+                <h1 class="text-white mx-3">{{new_orders}}</h1>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-danger" style="border-radius: 0;">
+                <h4 class="text-white mx-3">Total Completed Orders</h4>
+                <h1 class="text-white mx-3">{{completed_orders_count}}</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card bg-success" style="border-radius: 0;">
+                <h4 class="text-white mx-3">Total Customized Orders</h4>
+                <h1 class="text-white mx-3">{{customized_count}}</h1>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-info" style="border-radius: 0;">
+                <h4 class="text-white mx-3">New Customized Orders</h4>
+                <h1 class="text-white mx-3">{{new_customized_count}}</h1>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-secondary" style="border-radius: 0;">
+                <h4 class="text-white mx-2">Accepted Customized Orders</h4>
+                <h1 class="text-white mx-2">{{accepted_customized_count}}</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card bg-danger" style="border-radius: 0;">
+                <h4 class="text-white mx-2">Total Users</h4>
+                <h1 class="text-white mx-2">{{user_count}}</h1>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-primary" style="border-radius: 0;">
+                <h4 class="text-white mx-2">Total Customers</h4>
+                <h1 class="text-white mx-2">{{customer_count}}</h1>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-success" style="border-radius: 0;">
+                <h4 class="text-white mx-2">Total Suppliers</h4>
+                <h1 class="text-white mx-2">{{supplier_count}}</h1>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <a href="{% url 'by_date' %}" class="btn btn-secondary btn-block my-4">Generate Sales Reports</a>
+        </div>
+        <div class="col-md-4">
+            <a href="{% url 'by_date_customized' %}" class="btn btn-secondary btn-block my-4">Generate Customized Order
+                Reports</a>
+        </div>
+        <div class="col-md-4">
+            <a href="{% url 'stock' %}" class="btn btn-secondary btn-block my-4">Stock Details</a>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for i in products %}
+        {{i.product_name}} - {{i.stock}}
+        {% endfor %}
+    </div>
+
+</div>
+{% endif %}
+
+{% endblock %}

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, HttpResponse
 from . forms import CustomizedOrderForm
 from . models import CustomizedOrder
 import datetime
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -24,7 +25,19 @@ def customized_orders(request):
             data.description = form.cleaned_data['description']
             data.quantity = form.cleaned_data['quantity']
             data.design_image = form.cleaned_data['design_image']
-            data.save()
+
+            if data.order_type == "":
+                messages.error(request, "Please  enter a Type")
+                return redirect('customized_orders')
+
+            if data.quantity < 15:
+                messages.error(
+                    request, 'We will not accept orders less than 25. Please order 25 items or more!')
+                return redirect('customized_orders')
+            else:
+                data.save()
+                messages.success(
+                    request, "Successfully Placed the Order. ThanK you for ordering!")
 
             year = int(datetime.date.today().strftime('%Y'))
             date = int(datetime.date.today().strftime('%d'))
@@ -37,5 +50,6 @@ def customized_orders(request):
             data.save()
             return redirect('customized_orders')
         else:
-            return redirect('home')
+            return redirect('customized_orders')
+            # return redirect('home')
     return render(request, 'customized_orders/make_customized_orders.html', {})

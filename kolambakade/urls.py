@@ -20,6 +20,10 @@ from django.contrib import admin
 from django.urls import path, include
 from . import views
 
+admin.site.site_header = "Kolamba Kade"
+admin.site.site_title = "Kolamba Kade | Admin"
+admin.site.index_title = " Kolamba Kade Administration"
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name="home"),
@@ -29,6 +33,8 @@ urlpatterns = [
     path('orders/', include('orders.urls')),
     path('customized/', include('customized.urls')),
     path('posts/', include('posts.urls')),
+    path('reports/', include('reports.urls')),
+    path('supplier/', include('supplier.urls')),
 ]
 
 if settings.DEBUG:

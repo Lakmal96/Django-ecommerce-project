@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="container">
+    <div class="row d-flex justify-content-center my-3">
+        <div class="col-md-6 bg-light">
+            <div class="row">
+                <div class="col mt-1">
+                    <h3 class="text-primary">Kolamba Kade</h3>
+                    {% for i in supplier_order_detail %}
+                    <h6 class="text-danger">Order No: #{{i.id}}</h6>
+                    {% endfor %}
+                </div>
+            </div>
+            <hr>
+            <div class="row my-3">
+                <div class="col my-3">
+                    {% for i in supplier_order_detail %}
+                    <ul>
+                        <li>
+                            <h6>Order Type: <i>{{i.order_type}}</i></h6>
+                        </li>
+                        <li>
+                            <h6>Front Text: <i>{{i.front_text}}</i></h6>
+                        </li>
+                        <li>
+                            <h6>Back Text: <i>{{i.back_text}}</i></h6>
+                        </li>
+                        <li>
+                            <h6>Color: <i>{{i.color}}</i></h6>
+                        </li>
+                        <li>
+                            <h6>Logo:</h6><img src="{{i.design_image.url}}" alt="logo" style="max-height: 100px;">
+                        </li>
+                        <li>
+                            <h6>Quantity: <i>{{i.quantity}}</i></h6>
+                        </li>
+                        <li>
+                            <h6>Description: <i>{{i.description | safe}}</i></h6>
+                        </li>
+                    </ul>
+                    {% endfor %}
+                    <hr>
+                    <h5 class="text-danger">Please Contact Kolamba Kade for more details!</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

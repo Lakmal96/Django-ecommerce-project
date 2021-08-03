@@ -21,6 +21,6 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderProductInline]
 
 
-admin.site.register(Payment)
+# admin.site.register(Payment)
 admin.site.register(Order, OrderAdmin)
-admin.site.register(OrderProduct)
+# admin.site.register(OrderProduct)

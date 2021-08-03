@@ -29,4 +29,4 @@ class CustomizedOrder(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.front_text
+        return self.customized_order_number

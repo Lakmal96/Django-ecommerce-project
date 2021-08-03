@@ -11,7 +11,7 @@
         <!-- product image -->
         <div class="row">
             <div class="col-md-6">
-                <a href="#"><img src="{{single_product.images.url}}" class="img-fluid"></a>
+                <a href="#"><img src="{{single_product.images.url}}" class="img-fluid" style="height: 500px;"></a>
             </div>
             <!-- end product image -->
 
@@ -88,9 +88,16 @@
             <h5>Write your Review here!</h5>
             <p>How do you Rate this Product? (Please enter value between 1 and 5)</p>
             <form action="{% url 'product_review' single_product.id %}" method="POST">{% csrf_token %}
+                {% if user.is_authenticated and order_product %}
                 <input type="text" class="form-control my-2" placeholder="Ratings/5.0" name="ratings">
                 <input type="text" class="form-control my-2" placeholder="Subject" name="topic">
                 <Textarea class="form-control my-2" placeholder="Add your Review" name="review" rows="4"></Textarea>
+                {% else %}
+                <input type="text" class="form-control my-2" placeholder="Ratings/5.0" name="ratings" disabled>
+                <input type="text" class="form-control my-2" placeholder="Subject" name="topic" disabled>
+                <Textarea class="form-control my-2" placeholder="Add your Review" name="review" rows="4"
+                    disabled></Textarea>
+                {% endif %}
 
                 {% if user.is_authenticated %}
                 {% if order_product %}
@@ -104,7 +111,7 @@
             </form>
 
             {% for message in messages %}
-            <div class="alert alert-success" role="alert">
+            <div class="alert {{ message.tags }}" role="alert">
                 {{message}}
             </div>
             {% endfor %}

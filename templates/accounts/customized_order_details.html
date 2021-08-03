@@ -33,9 +33,15 @@
                         <li>
                             <h6>Color: <i>{{i.color}}</i></h6>
                         </li>
+                        {% if i.logo %}
                         <li>
                             <h6>Logo:</h6><img src="{{i.logo.url}}" alt="logo" style="max-height: 100px;">
                         </li>
+                        {% else %}
+                        <li>
+                            <h6>Logo:</h6>
+                        </li>
+                        {% endif %}
                         <li>
                             <h6>Description: <i>{{i.description}}</i></h6>
                         </li>

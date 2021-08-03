@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row mt-3">
+
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="text-primary text-center">Orders to {{request.user}}</h5>
+
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Order #</th>
+                                    <th scope="col">Order Type</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Orderd Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in supplier_order %}
+                                <tr>
+                                    <th scope="row">
+                                        <a href="{% url 'supplier_order_detail' i.id %}">{{i.id}}</a>
+                                    </th>
+                                    <td>{{i.order_type}}</td>
+                                    <td>{{i.status}}</td>
+                                    <td>{{i.created_at}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}

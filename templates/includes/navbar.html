@@ -15,7 +15,7 @@
                     <a class="nav-link text-white" href="{% url 'home' %}">Home </a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link text-white" href="#">Orders</a>
+                    <a class="nav-link text-white" href="{% url 'supplier_order' %}">Orders</a>
                 <li>
                     <a class="nav-link text-white" href="{% url 'logout' %}"> Logout</a>
                 </li>
@@ -85,8 +85,22 @@
                             {% endif %}
                             {% if user.is_authenticated %}
                             <div>
+                                {% if user.is_customer %}
                                 <a href="{% url 'dashboard' %}">Dashboard</a> <span> | </span>
+                                {% endif %}
+
+                                {% if user.is_superuser %}
+                                <a href="{% url 'sales_data' %}">Dashboard</a> <span> | </span>
+                                {% endif %}
+
+                                {% if user.is_customer %}
                                 <a href="{% url 'logout' %}"> Logout</a>
+                                {% endif %}
+
+                                {% if user.is_superuser %}
+                                <a href="/admin">Admin Site</a>
+                                {% endif %}
+
                             </div>
                             {% else %}
                             <div>
@@ -95,6 +109,7 @@
                             </div>
                             {% endif %}
                         </div>
+
                         <a href="{% url 'cart' %}" class="ml-3 my-2" style="text-decoration: none;">
                             <div><i class="fa fa-cart-plus fa-2x"></i>
                                 <span class="badge badge-pill badge-danger">{{cart_count}}</span>
