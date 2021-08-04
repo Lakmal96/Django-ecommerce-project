@@ -1,6 +1,8 @@
 from django.db import models
 from accounts.models import User
 from store.models import Product, Variation
+
+from django.core.exceptions import ValidationError
 # Create your models here.
 
 
@@ -70,3 +72,18 @@ class OrderProduct(models.Model):
 
     def __str__(self):
         return self.product.product_name
+
+
+class OrderDiscount(models.Model):
+    daily_discount = models.FloatField(default=0)
+
+    def clean(self):
+        if self.daily_discount < 0:
+            raise ValidationError(
+                "Enter a Valid Discount Rate (Should be a positive number)")
+        if self.daily_discount > 100:
+            raise ValidationError(
+                "Enter a Valid Discount Rate")
+
+    def __str__(self):
+        return str(self.daily_discount)

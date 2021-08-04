@@ -4,6 +4,8 @@ from django.urls import reverse
 from category.models import Category
 from accounts.models import User
 
+from django.core.exceptions import ValidationError
+
 # Create your models here.
 
 
@@ -18,6 +20,12 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
+
+    def clean(self):
+        if self.price < 0:
+            raise ValidationError("Please enter a valid 'Price'")
+        if self.stock < 0:
+            raise ValidationError("Please enter a Positive Value for 'Stock'")
 
     def get_details_url(self):
         return reverse('product_detail', args=[self.category.slug, self.slug])

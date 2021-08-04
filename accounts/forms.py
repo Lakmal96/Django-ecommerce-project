@@ -31,7 +31,7 @@ class CustomerSignUpForm(UserCreationForm):
                 "Phone number cannot include charcters")
         return phone_number
 
-    # to make sure all operations are done in a single database transaction
+    # all operations are done in a single database transaction
     @transaction.atomic
     def save(self):
         user = super().save(commit=False)
@@ -74,7 +74,7 @@ class SupplierSignUpForm(UserCreationForm):
                 "Phone number cannot include charcters")
         return phone_number
 
-    # to make sure all operations are done in a single database transaction
+    # all operations are done in a single database transaction
     @transaction.atomic
     def save(self):
         user = super().save(commit=False)

@@ -3,13 +3,12 @@ from store.models import Product, Variation
 from . models import Cart, CartItem
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
+from orders.models import OrderDiscount
 
 # Create your views here.
 
 
 # create a private function to get the cart id
-
-
 def _cart_id(request):
     cart = request.session.session_key
     if not cart:
@@ -169,8 +168,10 @@ def remove_all_cart(request, product_id, cart_item_id):
 
 
 def cart(request, total=0, quantity=0, cart_items=None):
-    try:
+    discount_rate = list(OrderDiscount.objects.values())
+    rate = discount_rate[0]['daily_discount']
 
+    try:
         discount = 0
         grand_total = 0
         if request.user.is_authenticated:
@@ -182,7 +183,7 @@ def cart(request, total=0, quantity=0, cart_items=None):
         for cart_item in cart_items:
             total += (cart_item.product.price * cart_item.quantity)
             quantity += cart_item.quantity
-        discount = (1*total)/100
+        discount = (rate*total)/100
         grand_total = (total - discount)
     except ObjectDoesNotExist:
         pass
@@ -200,6 +201,9 @@ def cart(request, total=0, quantity=0, cart_items=None):
 
 @login_required(login_url='login')
 def checkout(request, total=0, quantity=0, cart_items=None):
+    discount_rate = list(OrderDiscount.objects.values())
+    rate = discount_rate[0]['daily_discount']
+
     try:
 
         discount = 0
@@ -214,7 +218,7 @@ def checkout(request, total=0, quantity=0, cart_items=None):
         for cart_item in cart_items:
             total += (cart_item.product.price * cart_item.quantity)
             quantity += cart_item.quantity
-        discount = (1*total)/100
+        discount = (rate*total)/100
         grand_total = (total - discount)
     except ObjectDoesNotExist:
         pass

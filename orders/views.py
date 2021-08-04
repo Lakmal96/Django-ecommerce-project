@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from carts.models import CartItem
-from . models import Order, Payment, OrderProduct
+from . models import Order, Payment, OrderProduct, OrderDiscount
 from . forms import OrderForm
 from store.models import Product
 import datetime
 import json
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 
 # Create your views here.
 
@@ -79,6 +81,8 @@ def payments(request):
 
 def place_order(request, total=0, quantity=0):
     current_user = request.user
+    discount_rate = list(OrderDiscount.objects.values())
+    rate = discount_rate[0]['daily_discount']
 
     cart_items = CartItem.objects.filter(user=current_user)
     cart_count = cart_items.count()
@@ -90,7 +94,7 @@ def place_order(request, total=0, quantity=0):
     for cart_item in cart_items:
         total += (cart_item.product.price * cart_item.quantity)
         quantity += cart_item.quantity
-    discount = (1*total)/100
+    discount = (rate*total)/100
     grand_total = (total - discount)
 
     if request.method == 'POST':
@@ -165,3 +169,36 @@ def order_complete(request):
 
     except(Payment.DoesNotExist, Order.DoesNotExist):
         return redirect('home')
+
+
+def pdf_report(request, order_id):
+
+    order = Order.objects.get(order_number=order_id)
+    ordered_products = OrderProduct.objects.filter(order_id=order.id)
+
+    total_price = 0
+
+    for op in ordered_products:
+        total_price += op.product_price * op.quantity
+
+    template_path = 'orders/pdf_report.html'
+    context = {
+        'order': order,
+        'ordered_products': ordered_products,
+        'order_number': order.order_number,
+
+
+        'total_price': total_price}
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    # if error then show some funy view
+    if pisa_status.err:
+        return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
